@@ -1,5 +1,17 @@
 # CMake Notes
 
+- [CMakeLists.txt Composition](#)
+- [CMake Commands](#)
+  - [add_executable()](#)
+  - [project()](#)
+  - [cmake_minimum_required()](#)
+  - [add_library()](#)
+  - [target_link_libraries()](#)
+  - [message()](#)
+  - [set()](#)
+  - [list()](#)
+  - [string()](#)
+
 ### CMakeLists.txt Composition
 ```cmake
 command1(arg_a1, arg_a2, arg_a3 ...)
@@ -20,7 +32,7 @@ command4(arg_d1, arg_d2, arg_d3)
 - We have to provide the name of the final executable and the source files required to build the executable.
 - The naming sequence of the source files does not matter, BUT the name of the executable must be the first argument.
 
-#### `project(<project_name> VERSION <project_version)`
+#### `project(<project_name> VERSION <project_version>)`
 - This command states the name of the project, e.g. 'calculator'
 - The version of the project is stated using 'VERSION <version>', e.g. 1.0.0
 
@@ -67,7 +79,7 @@ command4(arg_d1, arg_d2, arg_d3)
 | `set(VAR "aa bb cc")`     | aa bb cc     | aa bb cc        | aa bb cc          |
 | `set(VAR "aa;bb;cc")`     | aa;bb;cc     | aabbcc          | aa;bb;cc          |
 
-#### `list<subcommand> <name_of_list ... ... ... <return_variable>)`
+#### `list(<subcommand> <name_of_list ... ... ... <return_variable>)`
 - The subcommand tells CMake which operation is to be performed
   - `APPEND`
   - `INSERT`
@@ -143,3 +155,82 @@ string(COMPARE ${UPPER_CASE_VAR} "MASTER CMAKE FOR CROSS-PLATFORM C++ PROJECT BU
 message(${equality_check_var}) # Outputs 1
 ```
 
+### Targets
+- Every target in CMake has come properties and dependencies associated with it.
+- Target Properties
+  - `INTERFACE_LINK_DIRECTORIES`
+  - `INCLUDE_DIRECTORIES`
+  - `VERSION`
+  - `SOURCES`
+- The properties can be modified or retrieved using these commands:
+  - `set_target_properties`
+  - `set_property`
+  - `get_property`
+  - `get_target_property`
+- Targets can also have dependencies with one another.
+- This means that if targetB is a dependency of targetA, then targetA can only be build after targetB has been build successfully.
+
+### Propagating Target Properties
+`target_link_libraries(myapp PUBLIC <item1> <item2>)`
+- Property: `INTERFACE_LINK_LIBRARIES`
+
+`target_link_libraries(myapp INTERFACE <item1> <item2>)`
+- Property: `INTERFACE_LINK_LIBRARIES`
+
+`target_include_directories(my_math PUBLIC include)`
+`target_include_directories(my_math INTERFACE include)`
+- Property: `INTERFACE_INCLUDE_DIRECTORIES`
+- Of Target: my_math
+
+- Example: Calculator's Dependencies
+  - `target_link_libraries(calculator my_math my_print)`
+  - Property Propagation:
+    - Properties of my_math:
+      - Property A = aaa
+      - Property B = bbb
+      - Property C = ccc
+    - Properties of my_print:
+      - Property A = xxx
+      - Property B = yyy
+      - Property C = zzz
+
+- `PUBLIC`, `PRIVATE` or `INTERFACE`:
+  - `target_include_directories(my_print PRIVATE include)`
+    - Property: `INTERFACE_INCLUDE_DIRECTORIES`
+    - Of Target: my_print
+    - Property set to: <not-set>
+
+- Calculator Example:
+
+| Question                                                                              | Answer | Answer    | Answer  |
+|:--------------------------------------------------------------------------------------|:-------|:----------|:--------|
+| Does 'my_math' need the directory?                                                    | Yes    | No        | Yes     |
+| Are the other targets, depending upon 'my_math' going to need this include directory? | Yes    | Yes       | No      |
+|                                                                                       | PUBLIC | INTERFACE | PRIVATE |
+
+- Commands that frequently require scope:
+
+| Command                      | Property set by the command     |
+|:-----------------------------|:--------------------------------|
+| `target_compile_definitions` | `INTERFACE_COMPILE_DEFINITIONS` |
+| `target_sources`             | `INTERFACE_SOURCES`             |
+| `target_compile_features`    | `INTERFACE_COMPILE_FEATURES`    |
+| `target_compile_options`     | `INTERFACE_COMPILE_OPTIONS`     |
+| `target_link_directories`    | `INTERFACE_LINK_DIRECTORIES`    |
+| `target_link_libraries`      | `INTERFACE_LINK_LIBRARIES`      |
+| `target_link_options`        | `INTERFACE_LINK_OPTIONS`        |
+| `target_precompile_headers`  | `INTERFACE_PRECOMPILE_HEADERS`  |
+
+- If a target has both public requirements and private requirements:
+```cmake
+target_include_directories(target PRIVATE xxx PUBlIC yyy)
+
+# OR
+
+target_include_directories(target PRIVATE xxx)
+target_include_directories(target PUBlIC yyy)
+```
+
+### Target Prefix/Suffix
+
+### Library Folder Structure
