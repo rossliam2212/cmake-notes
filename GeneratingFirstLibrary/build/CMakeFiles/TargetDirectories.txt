@@ -1,0 +1,5 @@
+/Users/liam/Coding/cppProjects/cmake_course/Generating_first_library/build/CMakeFiles/my_math.dir
+/Users/liam/Coding/cppProjects/cmake_course/Generating_first_library/build/CMakeFiles/my_print.dir
+/Users/liam/Coding/cppProjects/cmake_course/Generating_first_library/build/CMakeFiles/calculator.dir
+/Users/liam/Coding/cppProjects/cmake_course/Generating_first_library/build/CMakeFiles/edit_cache.dir
+/Users/liam/Coding/cppProjects/cmake_course/Generating_first_library/build/CMakeFiles/rebuild_cache.dir
