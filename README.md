@@ -155,6 +155,68 @@ string(COMPARE ${UPPER_CASE_VAR} "MASTER CMAKE FOR CROSS-PLATFORM C++ PROJECT BU
 message(${equality_check_var}) # Outputs 1
 ```
 
+#### `file()`
+- `READ`
+- `WRITE`
+- `RENAME`
+- `REMOVE`
+- `COPY`
+- `DOWNLOAD`
+- `LOCK`
+
+#### `if()`, `elseif()`, `else()`, `endif()`
+```cmake
+if(<condition>)
+    <command1>
+    <command2>
+endif()
+```
+
+```cmake
+if(<condition>)
+    <commands>
+elseif(<condition)
+    <commands>
+else()
+    <commands>
+endif()
+```
+
+- Constants:
+  - `1`, `ON`, `YES`, `TRUE`, `Y`, a non-zero number: TRUE
+  - `0`, `OFF`, `NO`, `FALSE`, `IGNORE`, `NOTFOUND`, empty string, string ending with `-NOTFOUND`: FALSE
+
+
+- Using variables with `if()`:
+```cmake
+# Constant:
+if(YES)
+    <commands>
+endif()
+
+# Variable:
+if(YE)
+    <commands>
+endif()
+```
+
+- `if()` Conditions:
+  - Unary tests
+  - Binary tests
+  - Boolean operators
+  
+
+- `if()` Conditions | Unary tests
+  - `DEFINED` - Used to check if a variable is set or not set.
+  - `COMMAND` - Used to check if a command exists or not.
+  - `EXISTS` - Used to check if a file or directory exists or not.
+
+
+- `if()` Conditions | Boolean operators
+  - `if(NOT DEFINED VAR)`
+  - `if(NOT(VAR STREQUAL "test" OR VAR2 STREQUAL "test2"))`
+  - `if(NOT(VAR STREQUAL "test" AND VAR2 STREQUAL "test2"))`
+
 ### Targets
 - Every target in CMake has come properties and dependencies associated with it.
 - Target Properties
@@ -232,5 +294,21 @@ target_include_directories(target PUBlIC yyy)
 ```
 
 ### Target Prefix/Suffix
+- Example:
+  - my_math
+    - my_math.lib
+    - my_math.dll
+    - my_math.a
+    - my_math.so
+    - libmy_mathso (lib prefix is OS dependent)
 
 ### Library Folder Structure
+```
+              ---> include/ ---> libraryName/ ---> *.h
+              |
+              |
+libraryName/ ----> src/ ---> *.cpp
+              |
+              |
+              ---> CMakeLists.txt
+```

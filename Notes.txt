@@ -188,7 +188,7 @@ command1(arg_d1, arg_d2, arg_d3)
         commands
     elseif(<condition>)
         commands
-    else
+    else()
         commands
     endif()
 
