@@ -217,6 +217,43 @@ endif()
   - `if(NOT(VAR STREQUAL "test" OR VAR2 STREQUAL "test2"))`
   - `if(NOT(VAR STREQUAL "test" AND VAR2 STREQUAL "test2"))`
 
+#### `while()`, `endwhile()`
+
+#### `foreach()`, `endforeach()`
+
+- Name is the loop variable; Liam, Erin & Gerard are the items that are being looped through
+```cmake
+foreach(Name Liam Erin Gerard)
+  <commands>
+endforeach()
+
+foreach(Name Liam;Erin;Gerard)
+    <commands>
+endforeach()
+```
+
+- Start value and end value is always inclusive
+```cmake
+foreach(x RANGE 10) # -> Range[0 -> 10]
+  <commands>
+endforeach()
+
+foreach(x RANGE 10 20) # -> Range[10 -> 20]
+    <commands>
+endforeach()
+
+foreach(x RANGE 10 20 3) # -> Range[10 -> 20] (Step size of 3)
+    <commands>
+endforeach()
+```
+
+- Looping over a list of lists
+```cmake
+foreach(x IN LISTS <list1> <list2> <list3>)
+  <commands>
+endforeach()
+```
+
 ### Targets
 - Every target in CMake has come properties and dependencies associated with it.
 - Target Properties
